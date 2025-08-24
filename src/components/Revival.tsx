@@ -239,8 +239,20 @@ const Revival: React.FC = () => {
     const thinkingTime = Math.random() * 2000 + 1000;
     
     setTimeout(() => {
-      // Add message to displayed messages
-      setDisplayedMessages(prev => [...prev, message]);
+      // Add message to displayed messages only if it's not already there
+      setDisplayedMessages(prev => {
+        const isDuplicate = prev.some(msg => 
+          msg.agent === message.agent && 
+          msg.message === message.message && 
+          msg.type === message.type
+        );
+        
+        if (isDuplicate) {
+          return prev;
+        }
+        
+        return [...prev, message];
+      });
       setIsTyping(false);
       setTypingAgent(null);
       
